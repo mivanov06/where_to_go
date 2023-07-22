@@ -8,16 +8,17 @@ from places.models import Place, Image
 class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Image
     extra = 1
-    readonly_fields = [image_preview]
+    readonly_fields = [image_preview, 'position']
 
 
 @admin.register(Place)
 class AdminPlace(SortableAdminBase, admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ['title']
     inlines = [ImageInline]
+    search_fields = ['title']
 
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ('place', 'position')
-    readonly_fields = [image_preview]
+    list_display = ['place', 'position']
+    readonly_fields = ['position']
