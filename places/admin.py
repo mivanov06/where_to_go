@@ -3,11 +3,15 @@ from django.contrib import admin
 from places.models import Place, Image
 
 
-# Register your models here.
+class ImageInline(admin.TabularInline):
+    model = Image
+    extra = 1
+
 
 @admin.register(Place)
 class AdminPlace(admin.ModelAdmin):
     list_display = ('title',)
+    inlines = [ImageInline]
 
 
 @admin.register(Image)
