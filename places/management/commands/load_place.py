@@ -33,12 +33,15 @@ class Command(BaseCommand):
         response = requests.get(file_url)
         response.raise_for_status()
         content = response.json()
+        updated_values = {
+            'description_short': content.get('description_short', ''),
+            'description_long': content.get('description_long', ''),
+            'longitude': content['coordinates']['lng'],
+            'latitude': content['coordinates']['lat']
+        }
         place, _ = Place.objects.update_or_create(
             title=content['title'],
-            description_short=content.get('description_short', ''),
-            description_long=content.get('description_long', ''),
-            longitude=content['coordinates']['lng'],
-            latitude=content['coordinates']['lat']
+            defaults=updated_values
         )
 
         images_url = content.get('imgs', [])
